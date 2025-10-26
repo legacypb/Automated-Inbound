@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Building. Start Converting. | Marketing Implementation Partner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .gradient-text-alt {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glow-card {
+            box-shadow: 0 0 60px rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.6); }
+        }
+
+        .floating {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .animated-gradient {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .mesh-gradient {
+            background:
+                radial-gradient(at 0% 0%, rgba(102, 126, 234, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(118, 75, 162, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(102, 126, 234, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(118, 75, 162, 0.15) 0px, transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Particle Background */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            animation: particle-float 20s infinite;
+        }
+
+        @keyframes particle-float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        /* Animated border */
+        .animated-border {
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .animated-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            background-size: 200% 200%;
+            animation: gradient-rotate 3s linear infinite;
+        }
+
+        .animated-border:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes gradient-rotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Counter animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Shimmer effect */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Magnetic button effect */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .magnetic-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Scroll progress indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            z-index: 9999;
+            transform-origin: left;
+        }
+
+        /* Testimonial card */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Video background overlay */
+        .video-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            z-index: 1;
+        }
+
+        .video-overlay > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Typing animation */
+        .typing-text {
+            overflow: hidden;
+            border-right: 3px solid #667eea;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
+        }
+
+        /* Glitch effect for stats */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch:hover {
+            animation: glitch 0.3s;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Reveal animation delays */
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <div x-data="{
+        showModal: false,
+        activeTab: 'overview',
+        scrolled: false,
+        currentTestimonial: 0,
+        stats: {
+            revenue: 0,
+            businesses: 0,
+            roi: 0
+        },
+        init() {
+            window.addEventListener('scroll', () => {
+                this.scrolled = window.pageYOffset > 50;
+
+                // Update scroll progress
+                const scrollProgress = document.getElementById('scrollProgress');
+                const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (window.pageYOffset / scrollTotal) * 100;
+                scrollProgress.style.width = progress + '%';
+            });
+
+            // Animate counters
+            this.animateCounters();
+
+            // Rotate testimonials
+            setInterval(() => {
+                this.currentTestimonial = (this.currentTestimonial + 1) % 3;
+            }, 5000);
+
+            // Initialize scroll animations
+            this.initScrollAnimations();
+
+            // Add particles
+            this.createParticles();
+        },
+        animateCounters() {
+            const duration = 2000;
+            const targetRevenue = 12;
+            const targetBusinesses = 50;
+            const targetRoi = 267;
+
+            const startTime = Date.now();
+
+            const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                this.stats.revenue = Math.floor(progress * targetRevenue);
+                this.stats.businesses = Math.floor(progress * targetBusinesses);
+                this.stats.roi = Math.floor(progress * targetRoi);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            // Start animation when stats come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animate();
+                        observer.disconnect();
+                    }
+                });
+            });
+
+            observer.observe(document.querySelector('.trust-indicators'));
+        },
+        initScrollAnimations() {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(reveal => revealObserver.observe(reveal));
+        },
+        createParticles() {
+            const particleContainer = document.querySelector('.particles');
+            if (!particleContainer) return;
+
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particleContainer.appendChild(particle);
+            }
+        }
+    }">
+
+        <!-- Navigation -->
+        <nav
+            :class="scrolled ? 'bg-white/95 backdrop-blur-xl shadow-lg' : 'bg-transparent'"
+            class="fixed w-full top-0 z-50 transition-all duration-500"
+        >
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex items-center space-x-3 cursor-pointer group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 shimmer">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold tracking-tight">ConversionEngine</span>
+                    </div>
+                    <button
+                        @click="showModal = true"
+                        class="magnetic-btn px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-2xl transition-all relative overflow-hidden group"
+                    >
+                        <span class="relative z-10">Book a Call</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-indigo-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="pt-32 pb-24 px-4 mesh-gradient relative overflow-hidden">
+            <!-- Particles -->
+            <div class="particles pointer-events-none"></div>
+
+            <!-- Floating Elements -->
+            <div class="absolute top-20 right-20 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 floating"></div>
+            <div class="absolute bottom-20 left-20 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 floating" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 floating" style="animation-delay: 4s;"></div>
+
+            <div class="max-w-7xl mx-auto relative">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8">
+                        <div class="reveal inline-flex items-center px-5 py-2.5 bg-purple-50 rounded-full border border-purple-100 shadow-sm">
+                            <span class="w-2.5 h-2.5 bg-purple-600 rounded-full mr-2 animate-pulse"></span>
+                            <span class="text-sm font-semibold text-purple-900">We Build It. You Convert. It's That Simple.</span>
+                        </div>
+
+                        <h1 class="reveal reveal-delay-1 text-6xl md:text-7xl lg:text-8xl font-black leading-tight tracking-tight">
+                            Stop Building.<br/>
+                            <span class="gradient-text inline-block">Start Converting.</span>
+                        </h1>
+
+                        <p class="reveal reveal-delay-2 text-xl md:text-2xl text-gray-600 leading-relaxed max-w-xl font-medium">
+                            While your competitors are still figuring out ClickFunnels, we're deploying
+                            <span class="text-purple-600 font-bold">battle-tested conversion systems</span> that book appointments, capture leads, and
+                            close deals on <span class="text-purple-600 font-bold">autopilot</span>.
+                        </p>
+
+                        <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4">
+                            <button
+                                @click="showModal = true"
+                                class="magnetic-btn px-10 py-5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-bold text-lg hover:shadow-2xl transition-all transform group relative overflow-hidden"
+                            >
+                                <span class="relative z-10 flex items-center justify-center">
+                                    See Your Custom Blueprint
+                                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    </svg>
+                                </span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-indigo-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                            </button>
+                            <a
+                                href="#case-studies"
+                                class="px-10 py-5 bg-white border-2 border-gray-200 rounded-xl font-bold text-lg hover:border-purple-600 hover:bg-purple-50 transition-all group flex items-center justify-center"
+                            >
+                                View Case Studies
+                                <svg class="w-5 h-5 ml-2 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <!-- Trust Indicators -->
+                        <div class="reveal reveal-delay-4 flex items-center space-x-8 pt-8 trust-indicators">
+                            <div class="glitch">
+                                <div class="text-4xl font-black counter" x-text="'$' + stats.revenue + 'M+'">$0M+</div>
+                                <div class="text-sm text-gray-600 font-medium">Revenue Generated</div>
+                            </div>
+                            <div class="h-16 w-px bg-gray-300"></div>
+                            <div class="glitch">
+                                <div class="text-4xl font-black counter" x-text="stats.businesses + '+'">0+</div>
+                                <div class="text-sm text-gray-600 font-medium">Businesses Scaled</div>
+                            </div>
+                            <div class="h-16 w-px bg-gray-300"></div>
+                            <div class="glitch">
+                                <div class="text-4xl font-black counter" x-text="stats.roi + '%'">0%</div>
+                                <div class="text-sm text-gray-600 font-medium">Avg ROI Increase</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual -->
+                    <div class="reveal reveal-delay-2 relative">
+                        <div class="relative glow-card bg-white rounded-3xl p-10 shadow-2xl animated-border">
+                            <div class="absolute -top-5 -right-5 px-5 py-2.5 bg-green-500 text-white rounded-xl font-bold text-sm shadow-lg animate-pulse">
+                                🔥 Live Campaign
+                            </div>
+                            <div class="space-y-8">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600 font-semibold">Conversion Rate</span>
+                                    <span class="text-3xl font-black text-green-600">23.4%</span>
+                                </div>
+                                <div class="h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                                    <div class="h-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 rounded-full shimmer" style="width: 87%"></div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-6 pt-6">
+                                    <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl">
+                                        <div class="text-3xl font-black text-gray-900">1,247</div>
+                                        <div class="text-xs text-gray-600 font-semibold mt-1">Visitors</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                                        <div class="text-3xl font-black text-gray-900">292</div>
+                                        <div class="text-xs text-gray-600 font-semibold mt-1">Leads</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
+                                        <div class="text-3xl font-black text-green-600">$18</div>
+                                        <div class="text-xs text-gray-600 font-semibold mt-1">Cost/Lead</div>
+                                    </div>
+                                </div>
+
+                                <!-- Real-time activity feed -->
+                                <div class="pt-6 border-t border-gray-100">
+                                    <div class="text-xs text-gray-500 font-semibold mb-3">RECENT CONVERSIONS</div>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center space-x-2 text-sm animate-pulse">
+                                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <span class="text-gray-700">Sarah M. just booked a call</span>
+                                            <span class="text-gray-400">2m ago</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                            <span class="text-gray-700">Mike T. downloaded guide</span>
+                                            <span class="text-gray-400">5m ago</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                            <span class="text-gray-700">Jessica R. signed up</span>
+                                            <span class="text-gray-400">8m ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Decorative elements -->
+                        <div class="absolute -bottom-8 -left-8 w-40 h-40 bg-purple-600 rounded-3xl opacity-10 floating"></div>
+                        <div class="absolute -top-8 -right-8 w-32 h-32 bg-indigo-600 rounded-2xl opacity-10 floating" style="animation-delay: 1s;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo Cloud -->
+        <section class="py-16 px-4 bg-white border-y border-gray-100">
+            <div class="max-w-7xl mx-auto">
+                <p class="text-center text-sm font-bold text-gray-400 mb-8 tracking-wider">TRUSTED BY INDUSTRY LEADERS</p>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center opacity-40 grayscale">
+                    <div class="text-center font-black text-2xl text-gray-800">ACME Corp</div>
+                    <div class="text-center font-black text-2xl text-gray-800">TechFlow</div>
+                    <div class="text-center font-black text-2xl text-gray-800">Innovate</div>
+                    <div class="text-center font-black text-2xl text-gray-800">Nexus</div>
+                    <div class="text-center font-black text-2xl text-gray-800">Zenith</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="py-24 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-20">
+                    <h2 class="reveal text-5xl md:text-6xl font-black mb-8 leading-tight">
+                        The Real Problem Isn't Your Product.<br/>
+                        It's Your <span class="gradient-text">Marketing Infrastructure.</span>
+                    </h2>
+                    <p class="reveal reveal-delay-1 text-2xl text-gray-600 max-w-3xl mx-auto font-medium">
+                        Most businesses are <span class="text-purple-600 font-bold">one optimized funnel away</span> from 10x revenue.
+                        But they're stuck in <span class="text-red-600 font-bold">implementation hell</span>.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="reveal bg-white rounded-3xl p-10 border-2 border-gray-100 hover:border-red-300 transition-all feature-card group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <span class="text-4xl">⏰</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-5">You're Spending Months Building</h3>
+                        <p class="text-gray-600 leading-relaxed text-lg">
+                            While your competitors are already converting, you're still wrestling with
+                            page builders, email automation, and integration nightmares.
+                        </p>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="text-sm font-bold text-red-600">← Losing $15K-50K in opportunity cost</div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-1 bg-white rounded-3xl p-10 border-2 border-gray-100 hover:border-red-300 transition-all feature-card group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <span class="text-4xl">💸</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-5">You're Wasting Ad Budget</h3>
+                        <p class="text-gray-600 leading-relaxed text-lg">
+                            Sending traffic to suboptimal pages is like pouring water into a leaky bucket.
+                            Every visitor you don't convert is money burned.
+                        </p>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="text-sm font-bold text-red-600">← Average 73% conversion loss</div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-2 bg-white rounded-3xl p-10 border-2 border-gray-100 hover:border-red-300 transition-all feature-card group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <span class="text-4xl">🎲</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-5">You're Guessing, Not Testing</h3>
+                        <p class="text-gray-600 leading-relaxed text-lg">
+                            Without proven frameworks and data-backed decisions, you're essentially
+                            gambling with your marketing budget.
+                        </p>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="text-sm font-bold text-red-600">← 9/10 campaigns underperform</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="py-24 px-4 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 text-white relative overflow-hidden animated-gradient">
+            <!-- Overlay pattern -->
+            <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    <div>
+                        <h2 class="reveal text-5xl md:text-6xl font-black mb-10 leading-tight">
+                            We Don't Sell Templates.<br/>
+                            We Deploy <span class="text-yellow-300">Revenue Systems.</span>
+                        </h2>
+                        <p class="reveal reveal-delay-1 text-2xl text-purple-100 mb-6 leading-relaxed font-bold">
+                            Forget DIY. Forget templates. Forget "figure it out yourself" courses.
+                        </p>
+                        <p class="reveal reveal-delay-2 text-xl text-purple-200 mb-10 leading-relaxed">
+                            We build, deploy, and optimize your entire conversion infrastructure from
+                            strategy to execution. You wake up to qualified leads in your inbox,
+                            appointments on your calendar, and sales flowing through your pipeline.
+                        </p>
+
+                        <div class="space-y-5">
+                            <div class="reveal reveal-delay-3 flex items-start space-x-5 bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all">
+                                <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-black text-xl mb-1">Built in 7 Days, Not 7 Months</div>
+                                    <div class="text-purple-200 text-lg">Complete funnel deployed and tested</div>
+                                </div>
+                            </div>
+                            <div class="reveal reveal-delay-4 flex items-start space-x-5 bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all">
+                                <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-black text-xl mb-1">Zero Learning Curve</div>
+                                    <div class="text-purple-200 text-lg">We handle tech, you handle business</div>
+                                </div>
+                            </div>
+                            <div class="reveal flex items-start space-x-5 bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all">
+                                <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-black text-xl mb-1">Performance Guaranteed</div>
+                                    <div class="text-purple-200 text-lg">We don't get paid unless you convert</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="reveal bg-white/10 backdrop-blur-lg rounded-3xl p-8 feature-card border border-white/20 hover:bg-white/20">
+                            <div class="text-5xl mb-4">🎯</div>
+                            <div class="text-3xl font-black mb-3">Strategy</div>
+                            <div class="text-purple-200 font-medium">Custom funnel architecture for your market</div>
+                        </div>
+                        <div class="reveal reveal-delay-1 bg-white/10 backdrop-blur-lg rounded-3xl p-8 feature-card border border-white/20 hover:bg-white/20">
+                            <div class="text-5xl mb-4">✍️</div>
+                            <div class="text-3xl font-black mb-3">Copywriting</div>
+                            <div class="text-purple-200 font-medium">Battle-tested conversion copy</div>
+                        </div>
+                        <div class="reveal reveal-delay-2 bg-white/10 backdrop-blur-lg rounded-3xl p-8 feature-card border border-white/20 hover:bg-white/20">
+                            <div class="text-5xl mb-4">🎨</div>
+                            <div class="text-3xl font-black mb-3">Design</div>
+                            <div class="text-purple-200 font-medium">High-converting pages and assets</div>
+                        </div>
+                        <div class="reveal reveal-delay-3 bg-white/10 backdrop-blur-lg rounded-3xl p-8 feature-card border border-white/20 hover:bg-white/20">
+                            <div class="text-5xl mb-4">⚙️</div>
+                            <div class="text-3xl font-black mb-3">Tech Setup</div>
+                            <div class="text-purple-200 font-medium">Full automation and integration</div>
+                        </div>
+                        <div class="reveal reveal-delay-4 bg-white/10 backdrop-blur-lg rounded-3xl p-8 feature-card border border-white/20 hover:bg-white/20">
+                            <div class="text-5xl mb-4">📊</div>
+                            <div class="text-3xl font-black mb-3">Analytics</div>
+                            <div class="text-purple-200 font-medium">Performance tracking and reporting</div>
+                        </div>
+                        <div class="reveal bg-white/10 backdrop-blur-lg rounded-3xl p-8 feature-card border border-white/20 hover:bg-white/20">
+                            <div class="text-5xl mb-4">🚀</div>
+                            <div class="text-3xl font-black mb-3">Optimization</div>
+                            <div class="text-purple-200 font-medium">Continuous improvement and scaling</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Studies -->
+        <section id="case-studies" class="py-24 px-4 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20">
+                    <h2 class="reveal text-5xl md:text-6xl font-black mb-8">
+                        Real Businesses. Real Results. <span class="gradient-text">Real Fast.</span>
+                    </h2>
+                    <p class="reveal reveal-delay-1 text-xl text-gray-600 max-w-3xl mx-auto">
+                        These aren't cherry-picked testimonials. These are actual results from businesses just like yours.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="reveal bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-10 feature-card border-2 border-blue-100">
+                        <div class="text-sm font-black text-indigo-600 mb-6 tracking-wider">MORTGAGE BROKER</div>
+                        <div class="text-7xl font-black text-gray-900 mb-3 gradient-text">267%</div>
+                        <div class="text-gray-700 mb-8 text-xl font-semibold">Revenue increase in 90 days</div>
+                        <div class="space-y-4 text-base">
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Before CPL:</span>
+                                <span class="font-black text-lg">$73</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">After CPL:</span>
+                                <span class="font-black text-green-600 text-lg">$18</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Build Time:</span>
+                                <span class="font-black text-lg">7 days</span>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-blue-200">
+                            <div class="text-sm text-gray-600 italic">"We're now turning away clients. Best problem to have."</div>
+                            <div class="text-sm font-bold text-gray-900 mt-2">— Marcus R., Broker</div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-1 bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-10 feature-card border-2 border-purple-100">
+                        <div class="text-sm font-black text-purple-600 mb-6 tracking-wider">LUXURY SPA</div>
+                        <div class="text-7xl font-black text-gray-900 mb-3 gradient-text">8 Weeks</div>
+                        <div class="text-gray-700 mb-8 text-xl font-semibold">Booking waitlist created</div>
+                        <div class="space-y-4 text-base">
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Conversion Rate:</span>
+                                <span class="font-black text-lg">34%</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Avg. Ticket:</span>
+                                <span class="font-black text-green-600 text-lg">+$187</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Launch Time:</span>
+                                <span class="font-black text-lg">5 days</span>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-purple-200">
+                            <div class="text-sm text-gray-600 italic">"The funnel pays for itself every single day."</div>
+                            <div class="text-sm font-bold text-gray-900 mt-2">— Elena S., Owner</div>
+                        </div>
+                    </div>
+
+                    <div class="reveal reveal-delay-2 bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-10 feature-card border-2 border-green-100">
+                        <div class="text-sm font-black text-green-600 mb-6 tracking-wider">PROFESSIONAL SERVICES</div>
+                        <div class="text-7xl font-black text-gray-900 mb-3 gradient-text">$127K</div>
+                        <div class="text-gray-700 mb-8 text-xl font-semibold">Additional monthly revenue</div>
+                        <div class="space-y-4 text-base">
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Lead Quality:</span>
+                                <span class="font-black text-lg">89% qualified</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">Close Rate:</span>
+                                <span class="font-black text-green-600 text-lg">43%</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-white rounded-xl">
+                                <span class="text-gray-600 font-semibold">ROI:</span>
+                                <span class="font-black text-lg">13:1</span>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-green-200">
+                            <div class="text-sm text-gray-600 italic">"I should have done this 3 years ago. The ROI is insane."</div>
+                            <div class="text-sm font-bold text-gray-900 mt-2">— David K., CEO</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof / Testimonials -->
+        <section class="py-24 px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="reveal text-4xl md:text-5xl font-black mb-6">
+                        What Our Clients Say
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="reveal bg-white rounded-3xl p-10 shadow-lg testimonial-card">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                                JD
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">Jennifer Davis</div>
+                                <div class="text-gray-600">Marketing Director, TechFlow</div>
+                            </div>
+                        </div>
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            "We went from generating 20 leads per month to over 300. The conversion infrastructure they built is printing money. Seriously the best investment we've made."
+                        </p>
+                    </div>
+
+                    <div class="reveal reveal-delay-1 bg-white rounded-3xl p-10 shadow-lg testimonial-card">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                                RP
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">Robert Patterson</div>
+                                <div class="text-gray-600">Founder, GrowthLabs</div>
+                            </div>
+                        </div>
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            "I was skeptical about the '7-day deployment' claim. They delivered in 5 days and we were profitable by week 3. Unreal."
+                        </p>
+                    </div>
+
+                    <div class="reveal reveal-delay-2 bg-white rounded-3xl p-10 shadow-lg testimonial-card">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                                AM
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">Amanda Martinez</div>
+                                <div class="text-gray-600">CEO, Innovate Solutions</div>
+                            </div>
+                        </div>
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            "Finally, a team that actually understands conversion optimization. They built us a system that runs 24/7 while we sleep. Game changer."
+                        </p>
+                    </div>
+
+                    <div class="reveal reveal-delay-3 bg-white rounded-3xl p-10 shadow-lg testimonial-card">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                                TC
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">Thomas Chen</div>
+                                <div class="text-gray-600">VP Sales, Nexus Corp</div>
+                            </div>
+                        </div>
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-gray-700 text-lg leading-relaxed">
+                            "ROI was 8:1 in the first month. Now we're at 13:1 and scaling. This is exactly what we needed to break through our growth ceiling."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="py-32 px-4 bg-gray-900 text-white relative overflow-hidden">
+            <!-- Animated background -->
+            <div class="absolute inset-0 opacity-30">
+                <div class="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl floating"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600 rounded-full filter blur-3xl floating" style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                <div class="reveal inline-block px-6 py-3 bg-purple-500/20 rounded-full border border-purple-400 mb-8">
+                    <span class="text-purple-300 font-semibold">⚡ Limited Spots Available This Month</span>
+                </div>
+
+                <h2 class="reveal reveal-delay-1 text-5xl md:text-7xl font-black mb-8 leading-tight">
+                    Ready to Stop Building<br/>and Start Converting?
+                </h2>
+
+                <p class="reveal reveal-delay-2 text-2xl text-gray-300 mb-12 max-w-3xl mx-auto font-medium">
+                    Book a free strategy call. We'll show you exactly how we'd build your conversion system—no fluff, no sales pitch, just a genuine conversation about scaling your business.
+                </p>
+
+                <div class="reveal reveal-delay-3 space-y-6">
+                    <button
+                        @click="showModal = true"
+                        class="magnetic-btn px-16 py-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl font-black text-2xl hover:shadow-2xl transition-all transform group relative overflow-hidden inline-flex items-center"
+                    >
+                        <span class="relative z-10">Book Your Free Strategy Call</span>
+                        <svg class="relative z-10 w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-indigo-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    </button>
+
+                    <div class="flex items-center justify-center space-x-8 text-gray-400">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>No commitment required</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>30-minute consultation</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Custom blueprint</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-gray-500 mt-12 text-sm">
+                    Join 50+ businesses already scaling with ConversionEngine
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 px-4 bg-black text-gray-400">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-white">ConversionEngine</span>
+                </div>
+                <p class="text-sm">© 2025 ConversionEngine. All rights reserved.</p>
+                <div class="mt-6 space-x-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Modal -->
+        <div
+            x-show="showModal"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            x-cloak
+            @click="showModal = false"
+        >
+            <div
+                @click.stop
+                class="bg-white rounded-3xl p-10 max-w-lg w-full relative"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+            >
+                <button
+                    @click="showModal = false"
+                    class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-black mb-3">Book Your Strategy Call</h3>
+                    <p class="text-gray-600">We'll show you exactly how to scale your business with a custom conversion system.</p>
+                </div>
+
+                <form class="space-y-5">
+                    <input
+                        type="text"
+                        placeholder="Your Name"
+                        class="w-full px-5 py-4 bg-gray-50 rounded-xl border-2 border-gray-100 focus:border-purple-600 focus:bg-white transition-all outline-none font-medium"
+                        required
+                    />
+                    <input
+                        type="email"
+                        placeholder="Email Address"
+                        class="w-full px-5 py-4 bg-gray-50 rounded-xl border-2 border-gray-100 focus:border-purple-600 focus:bg-white transition-all outline-none font-medium"
+                        required
+                    />
+                    <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        class="w-full px-5 py-4 bg-gray-50 rounded-xl border-2 border-gray-100 focus:border-purple-600 focus:bg-white transition-all outline-none font-medium"
+                        required
+                    />
+                    <select class="w-full px-5 py-4 bg-gray-50 rounded-xl border-2 border-gray-100 focus:border-purple-600 transition-all outline-none font-medium">
+                        <option>Current Monthly Revenue</option>
+                        <option>Under $10K</option>
+                        <option>$10K - $50K</option>
+                        <option>$50K - $100K</option>
+                        <option>$100K - $250K</option>
+                        <option>$250K+</option>
+                    </select>
+                    <textarea
+                        placeholder="Tell us about your biggest marketing challenge (optional)"
+                        rows="3"
+                        class="w-full px-5 py-4 bg-gray-50 rounded-xl border-2 border-gray-100 focus:border-purple-600 focus:bg-white transition-all outline-none font-medium resize-none"
+                    ></textarea>
+                    <button
+                        type="submit"
+                        class="w-full px-8 py-5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-black text-lg hover:shadow-2xl transition-all relative overflow-hidden group"
+                    >
+                        <span class="relative z-10">Schedule My Free Call →</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-indigo-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                    </button>
+                </form>
+
+                <p class="text-center text-sm text-gray-500 mt-6">
+                    🔒 Your information is 100% secure. We'll never share it.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
